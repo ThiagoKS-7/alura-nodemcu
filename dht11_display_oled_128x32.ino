@@ -26,11 +26,10 @@
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
+int tmpAnt = 0;
+int humAnt = 0;
 
-#define DHTPIN 3
-#define DHTTYPE DHT11 // select between DHT11 or DHT22
-
-DHT dht(DHTPIN, DHTTYPE);
+DHT dht(2, DHT11);
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
 // The pins for I2C are defined by the Wire-library. 
@@ -52,7 +51,7 @@ void setup() {
   // Show initial display buffer contents on the screen --
   // the library initializes this with an Adafruit splash screen.
   display.display();
-  delay(5000);
+  delay(1000);
 
   getDHTData();  
 }
@@ -71,23 +70,33 @@ void getDHTData(void) {
   showTempInfo();
   
   display.display();
-  delay(5000);
+  delay(1000);
 }
 
 void showTempInfo(void) {
   int humidity = dht.readHumidity();
   int temperature = dht.readTemperature(false);
-  Serial.println(humidity);
-  Serial.println(temperature);
 
   display.setCursor(0, 0);     // Start at mid-left corner
   display.write("Temp:");
-  display.print("99");
+  if (temperature > 999 || isnan(temperature)) {
+    display.print(tmpAnt);
+    tmpAnt = 0;
+  } else {
+    display.print(temperature);
+    tmpAnt = temperature;
+  }
   display.write(" C");
 
   display.setCursor(0, 18);
   display.write("Hum:");
-  display.print("999");
+  if (humidity > 999 || isnan(humidity)) {
+    display.print(humAnt);
+    humAnt = 0;
+  } else {
+    display.print(humidity);
+    humAnt = humidity;
+  }
   display.write(" %");
 }
 
