@@ -1,2 +1,5 @@
 # alura-nodemcu
-![circuit](https://github.com/ThiagoKS-7/alura-nodemcu/assets/83460816/dc6db0a5-6c6a-4e9f-8c6b-8641bb325227)
+<div align="center" >
+  <img height="400" src="https://github.com/ThiagoKS-7/alura-nodemcu/assets/83460816/f60dbb7d-9e43-4e7c-bdcc-e85a0570db03" alt="circuit" />
+</div>
+
