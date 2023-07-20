@@ -40,8 +40,8 @@ int humAnt = 0; // anterior humidity, so we can save the previous value, to show
 
 
 // -------- WIFI  -------- //
-#define WIFI_SSID "CLARO_2G964DB7"
-#define WIFI_PASSWORD "F7964DB7"
+#define WIFI_SSID "your_ssid" 
+#define WIFI_PASSWORD "your_password" 
 
 // Raspberry Pi Mosquitto MQTT Broker
 //#define MQTT_HOST IPAddress(192, 168, 1, XXX)
@@ -62,7 +62,7 @@ Ticker wifiReconnectTimer;
 
 unsigned long currentMillis = millis();
 unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 5000;        // Interval at which to publish sensor readings
+const long interval = 20000;        // Interval at which to publish sensor readings
 // -------- WIFI  -------- //
 
 
@@ -159,7 +159,8 @@ void publishTempOnBroker(int temperature) {
     // Publish an MQTT message on topic nodemcu/dht11/temperature, at QoS 1
      uint16_t packetIdPubTemp = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temperature).c_str());
     Serial.printf("[MQTT] Publishing on topic %s at QoS 1, packetId: %i", MQTT_PUB_TEMP, packetIdPubTemp);
-    Serial.printf("Message: %.2f \n", String(temperature).c_str()); 
+    Serial.print("Message:");
+    Serial.println(temperature); 
   }
 }
 
@@ -171,7 +172,8 @@ void publishHumidityOnBroker(int humidity) {
     // Publish an MQTT message on topic nodemcu/dht11/humidity, at QoS 1
     uint16_t packetIdPubHum = mqttClient.publish(MQTT_PUB_HUM, 1, true, String(humidity).c_str());
     Serial.printf("[MQTT] Publishing on topic %s at QoS 1, packetId %i: ", MQTT_PUB_HUM, packetIdPubHum);
-    Serial.printf(" Message: %.2f \n",String(humidity).c_str());
+    Serial.print(" Message: ");
+    Serial.println(humidity);
   }
 }
 
@@ -202,9 +204,6 @@ void showTempInfo(void) {
   currentMillis = millis();
   int humidity = dht.readHumidity();
   int temperature = dht.readTemperature(false);
-
-  Serial.println(temperature);
-  Serial.println(humidity);
 
   display.setCursor(0, 0);     // Start at mid-left corner
   display.write("Temp:");
